@@ -1,6 +1,6 @@
 +++
 date = '2025-03-02T17:29:08+08:00'
-draft = true
+draft = false 
 title = 'ollama 使用'
 +++
 
