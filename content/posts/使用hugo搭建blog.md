@@ -118,9 +118,9 @@ scp 的action 使用可以参考 [这里](https://github.com/appleboy/scp-action
 
 ![image-20250302211801662](./images/image-20250302211801662.png)
 
-`hugo.toml` 中的内容配置如下， 主要设置好 baseURL 。
+hugo.toml 中的内容配置如下， 主要设置好 baseURL 。
 
-```cat hugo.toml
+```
 baseURL = 'https://bruceding.me/'
 languageCode = 'en-us'
 title = 'BruceDing’s blog'

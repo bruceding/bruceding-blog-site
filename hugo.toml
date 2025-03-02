@@ -2,3 +2,14 @@ baseURL = 'https://bruceding.me/'
 languageCode = 'en-us'
 title = 'BruceDing’s blog'
 theme = 'paper'
+
+[params]
+  # color style
+  color = 'linen'                           # linen, wheat, gray, light
+
+  # header social icons
+  twitter = 'bruce_ding'               # twitter.com/YOUR_TWITTER_ID
+  github = 'bruceding'                 # github.com/YOUR_GITHUB_ID
+  rss = true  
+
+  name = 'bruce ding'
