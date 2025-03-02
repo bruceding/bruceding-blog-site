@@ -1,6 +1,6 @@
 +++
-date = '2025-03-02T17:29:08+08:00'
-draft = true
+date = '2025-02-28T17:29:08+08:00'
+draft = false 
 title = 'wasm技术介绍'
 +++
 
