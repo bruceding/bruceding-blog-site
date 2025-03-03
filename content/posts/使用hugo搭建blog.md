@@ -8,11 +8,11 @@ title = '使用hugo搭建blog'
 
 hugo 的使用参考[这里](https://github.com/gohugoio/hugo). 
 
-首先进行 hugo 安装， 本地电脑室mac ，通过 brew 安装
+首先进行 hugo 安装， 本地电脑是mac ，通过 brew 安装
 ```
 brew install hugo
 ```
-然后创建一个网站, 会创建这个目录。
+然后创建一个网站, 会新建这个目录。
 ```
 hugo new site bruceding-blog-site
 ```
@@ -45,7 +45,7 @@ title = '使用hugo搭建blog'
 ```
 在写blog 时，经常会用到图片的引用。我们在 content/posts 目录下创建 images 目录，所有的图片统一放到这里。那么 posts 下的blog 可以直接通过 `./images/image-xxx.png` 引用。
 
-我们写完blog ，git push 当 github 上时，可以通过 github action 编译生成静态网站，并推送到部署服务器上。
+我们写完blog ，git push 到 github 上时，可以通过 github action 编译生成静态网站，并推送到部署服务器上。
 github action 写在 `.github/workflows/hugo.yml` 文件，内容参考如下：
 ```
 # Sample workflow for building and deploying a Hugo site to GitHub Pages
@@ -151,4 +151,3 @@ sudo yum install epel-release
 sudo yum install certbot python3-certbot-nginx
 sudo certbot --nginx
 ```
-
