@@ -1,15 +1,66 @@
 baseURL = 'https://bruceding.me/'
 languageCode = 'en-us'
 title = 'BruceDing’s blog'
-theme = 'paper'
+theme = 'PaperMod'
+
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
 
 [params]
   # color style
   color = 'linen'                           # linen, wheat, gray, light
+  env = "production"
 
   # header social icons
   twitter = 'bruce_ding'               # twitter.com/YOUR_TWITTER_ID
   github = 'bruceding'                 # github.com/YOUR_GITHUB_ID
   rss = true  
-
+  ShowCodeCopyButtons = true
   name = 'bruce ding'
+  [params.homeInfoParams]
+    Title = "Hi there \U0001F44B"
+    Content = "Welcome to BruceDing’s blog"
+  [[params.socialIcons]]
+    name = "x"
+    url = "https://x.com/bruce_ding"
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/bruceding"
+
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    location = 0
+    distance = 1000
+    threshold = 0.4
+    minMatchCharLength = 0
+    limit = 10 # refer: https://www.fusejs.io/api/methods.html#search
+    keys = ["title", "permalink", "summary", "content"]
+[[menu.main]]
+  identifier = "archives"
+  name = "archives"
+  url = "/archives/"
+  weight = 10
+
+[[menu.main]]
+  identifier = "tags"
+  name = "tags"
+  url = "/tags/"
+  weight = 20
+
+[[menu.main]]
+  identifier = "search"
+  name = "search"
+  url = "/search/"
+  weight = 20
+
+[[menu.main]]
+  identifier = "home"
+  name = "home"
+  url = "https://bruceding.me"
+  weight = 30
+
+[outputs]
+home = [ "HTML", "RSS", "JSON" ]

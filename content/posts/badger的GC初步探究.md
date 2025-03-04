@@ -2,6 +2,14 @@
 date = '2025-03-04T00:26:07+08:00'
 draft = false
 title = 'Badger的GC初步探究'
+searchHidden = true
+ShowReadingTime =  true
+ShowBreadCrumbs =  true
+ShowPostNavLinks =  true
+ShowWordCount =  true
+ShowRssButtonInSectionTermList =  true
+UseHugoToc = true
+tags = ["Badger", "KV"]
 +++
 
 类似 RocksDB， badger 是 Go 基于 LSM 实现的 KV 数据库。本文介绍基于 badger 的 1.62 版本。 与传统的LSM 不同，对于 value 数据，badger 会写入 value log，来减少写放大和读放大。但是也会造成问题，就是磁盘会占用过多。 value log 的 gc 实现的比较简单。

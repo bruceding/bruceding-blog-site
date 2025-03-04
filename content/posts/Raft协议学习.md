@@ -2,6 +2,13 @@
 date = '2025-03-02T17:29:08+08:00'
 draft = false 
 title = 'Raft协议学习'
+searchHidden = true
+ShowReadingTime =  true
+ShowBreadCrumbs =  true
+ShowPostNavLinks =  true
+ShowWordCount =  true
+ShowRssButtonInSectionTermList =  true
+UseHugoToc = true
 +++
 
 论文地址：[https://raft.github.io/raft.pdf](https://raft.github.io/raft.pdf)
