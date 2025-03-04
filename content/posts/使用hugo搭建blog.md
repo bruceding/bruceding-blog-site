@@ -2,6 +2,14 @@
 date = '2025-02-12T20:38:52+08:00'
 draft = false 
 title = '使用hugo搭建blog'
+searchHidden = true
+ShowReadingTime =  true
+ShowBreadCrumbs =  true
+ShowPostNavLinks =  true
+ShowWordCount =  true
+ShowRssButtonInSectionTermList =  true
+UseHugoToc = true
+tags = ["hugo"]
 +++
 
 本文介绍如何使用 hugo 搭建静态网站，网站内容push 到 github 上，通过 github action 编译然后传到 linode 机器上，通过nginx 服务访问网站内容。

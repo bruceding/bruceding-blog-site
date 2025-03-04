@@ -2,6 +2,14 @@
 date = '2025-03-01T17:29:08+08:00'
 draft = false 
 title = 'ollama 使用'
+searchHidden = true
+ShowReadingTime =  true
+ShowBreadCrumbs =  true
+ShowPostNavLinks =  true
+ShowWordCount =  true
+ShowRssButtonInSectionTermList =  true
+UseHugoToc = true
+tags = ["ollama"]
 +++
 
 ## 安装

@@ -2,6 +2,14 @@
 date = '2025-02-28T17:29:08+08:00'
 draft = false 
 title = 'wasm技术介绍'
+searchHidden = true
+ShowReadingTime =  true
+ShowBreadCrumbs =  true
+ShowPostNavLinks =  true
+ShowWordCount =  true
+ShowRssButtonInSectionTermList =  true
+UseHugoToc = true
+tags = ["wasm"]
 +++
 
 ## 什么是 WebAssembly
