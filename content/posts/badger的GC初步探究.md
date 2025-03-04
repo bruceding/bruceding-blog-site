@@ -12,7 +12,7 @@ title = 'Badger的GC初步探究'
 2. value pointer 会记录 写入 value log 文件的 fid ,offset, len
 3. 然后把数据写入 memtable ,如何memtable 数据写满的话，会变成不可更改的 memtable , 然后写入到 SST Tables 中。
 
-![img](https://intranetproxy.alipay.com/skylark/lark/0/2024/png/10041/1715159538575-84979a95-caf4-46b1-ab1d-d4dcc68d460a.png)
+![img](images/image-20250304221430056.png)
 
 那么何时刷新 memtable ， 目前有两种情况：
 
@@ -52,7 +52,7 @@ badger 的 value gc 的回收，可以类似下面的代码触发
 
 举个例子说明，下面是典型的 badger 数据库的目录。假设 head pointer 对应的 fid 是 110， 那么可以回收的文件列表就是 101 ~109 。然后进行上面的 2,3 步操作。
 
-
+![image-20250304000554674.png](./images/image-20250304000554674.png)
 
 刷新 memtable 有两种方式，如果尽可能使用第一种方式，那么 head pointer 就会指向最新的 vlog 从而尽可能回收vlog 文件，减少磁盘的利用。那么可以通过：
 
