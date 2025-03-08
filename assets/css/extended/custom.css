@@ -1,0 +1,4 @@
+/* 只修改文章内容中的超链接颜色 */
+.post-content a {
+    color: blue;
+}
