@@ -1,6 +1,6 @@
 +++
 date = '2025-03-08T11:42:13+08:00'
-draft = true
+draft = false 
 title = 'Wasm导入函数示例'
 searchHidden = true
 ShowReadingTime =  true
@@ -8,17 +8,9 @@ ShowBreadCrumbs =  true
 ShowPostNavLinks =  true
 ShowWordCount =  true
 ShowRssButtonInSectionTermList =  true
-UseHugoToc = true
-showToc = true
-TocOpen = false
-hidemeta = false
-comments = false
-description = 'Desc Text.'
-disableHLJS = true 
-disableShare = false
-hideSummary = false
-tags = ["Wasm"]
+tags = ["wasm"]
 +++
+
 从[wasm技术介绍](../wasm技术介绍) 里可以看到如果导出函数，并且在宿主机里进行调用。本文介绍如何进行导入函数，从宿主机导入函数并在wasm函数里使用。
 还是基于tinygo 来进行演示。
 
