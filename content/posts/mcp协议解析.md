@@ -225,7 +225,7 @@ I0327 23:58:47.915518   48300 main.go:106] write response	{"jsonrpc":"2.0","id":
 
 在上面的整体链路的描述中，也可以看这里的[视频](https://www.bilibili.com/video/BV1P3XTYPEJm?spm_id_from=333.788.recommend_more_video.-1&vd_source=e91f1e0e2fd6e7afd65d0e39c8cb3c68)更快速的理解。
 
-![wechat_2025-03-27_224340_245](./images/wechat_2025-03-27_224340_245.png)
+![wechat_2025-03-27_224340_245](./images/image-20250327224340245.png)
 
 从下面的截图中，也比较方便的看出整个的过程。 
 
