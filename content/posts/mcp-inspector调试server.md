@@ -50,4 +50,4 @@ npx -y @modelcontextprotocol/inspector "/Users/bruceding 1/Projects/go/src/go-ec
 
 连接成功后，如果测试 Tools 功能，选择 Tools tab,  调用 List Tools 方法，会列出 tools 工具，进行测试即可。
 
-![image-20250330093649897](/Users/bruceding 1/gitrepo/bruceding-blog-site/content/posts/images/image-20250330093649897.png)
+![image-20250330093649897](./images/image-20250330093649897.png)
