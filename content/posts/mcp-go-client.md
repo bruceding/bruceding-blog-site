@@ -17,6 +17,7 @@ description = ''
 disableHLJS = true 
 disableShare = false
 hideSummary = false
+tags = ["mcp", "llm", "ai"]
 +++
 
 在[mcp协议解析](../mcp协议解析)文章中，我们已经了解了mcp协议的基本概念，以及如何使用mcp协议来开发一个mcp server。本文将介绍如何使用mcp协议来开发一个mcp client。
