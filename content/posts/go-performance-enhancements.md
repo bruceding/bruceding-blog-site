@@ -84,7 +84,9 @@ Go 1.25 版本作为实验特性引入，需要设置GOEXPERIMENT=jsonv2 来开�
 
 GOEXPERIMENT=jsonv2 开启后，marshal 和 unmarshal 会使用新的实现，性能会有提升。 但是并不完全兼容。尤其是对于 map 的处理，原有的实现会对map进行key排序之后，再编码。但是新版本不会。这样的话，对于map生成的字符串，不能保证完全一致。新版本也会slice 或者map 为nil 的情况的处理也不同，新版本的实现更符合json 的规范。
 
-详细的介绍参考官方博客[Go 1.25: JSON Encoding and Decoding](https://go.dev/blog/jsonv2-exp?__readwiseLocation=)
+详细的介绍参考官方[博客](https://go.dev/blog/jsonv2-exp?__readwiseLocation=)。
+
+之前的版本想提高JSON的性能，使用这个库[json-iterator](https://github.com/json-iterator/go)。
 
 
 ## Green Tea 垃圾回收算法
