@@ -68,7 +68,7 @@ Go 1.24版本引入，使用 Swiss Table 的理念，全新重写了map。直接
 
 这里有做具体的测试比较。参考[这里](https://www.bytesizego.com/blog/go-124-swiss-table-maps?__readwiseLocation=)。这里看到查找和插入性能都有明显的提升，但是删除性能有下降。
 
-这个[博文](https://www.datadoghq.com/blog/engineering/go-swiss-tables/?__readwiseLocation=)从生成实践的角度说明了新map带来的性能提升和内存占比。并发现了一处bug，推荐使用1.24.6之后的版本。
+这个[博文](https://www.datadoghq.com/blog/engineering/go-swiss-tables/?__readwiseLocation=)从生产实践的角度说明了新map带来的性能提升和内存占比。并发现了一处bug，推荐使用1.24.6之后的版本。
 
 ## 容器感知的 GOMAXPROCS
 Go 1.25 中引入。 GOMAXPROCS 可以控制GMP模型中的P的数量，默认值为运行时的CPU核心数。但是在容器环境中，由于容器的cpu 只是宿主机的一部分，之前 GOMAXPROCS 会设置成宿主机的CPU数量，这实际会带来性能问题。之前有两种解法：
