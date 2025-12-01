@@ -17,6 +17,7 @@ description = ''
 disableHLJS = true 
 disableShare = false
 hideSummary = false
+tags = ["go", "performance"]
 +++
 随着GO版本的迭代，GO语言的性能也在不断提升。下文梳理下GO种提升性能的几处改动。
 
