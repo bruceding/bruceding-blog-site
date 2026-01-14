@@ -17,6 +17,7 @@ description = ''
 disableHLJS = true 
 disableShare = false
 hideSummary = false
+tags = ['linux', 'io_uring']
 +++
 io_uring 是 Linux 内核提供的异步 IO 接口，它可以用于替代传统的同步 IO 接口，如 `read`、`write` 等。io_uring 提供了一种基于事件循环的异步 IO 模型，能够在单个线程中处理多个 IO 操作，从而提高 IO 操作的并发性和效率。io_uring 从内核5.1版本开始引入，在这之前，AIO 提供了异步IO 的功能。但是存在诸多的限制，包括       
 
