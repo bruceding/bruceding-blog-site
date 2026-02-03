@@ -28,6 +28,9 @@ buildExpired = false
   [[params.socialIcons]]
     name = "github"
     url = "https://github.com/bruceding"
+  [[params.socialIcons]]
+    name = "rss"
+    url = "/index.xml"
 
   [params.fuseOpts]
     isCaseSensitive = false
