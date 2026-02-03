@@ -145,6 +145,48 @@ T 列是写入类型，分为W和R。和biolatency 计算类似，LAT列的耗�
 * IO大小可以自主控制
 * 可以自主控制流控，避免写入过快，导致磁盘限流
 
-2. 如果使用第三方的实现方式，是通过 Page Cache 进行数据写入的话。要尽量平滑写入，不能积累大量的脏页数据，然后瞬时写入，这样会导致磁盘IO峰值，影响读取性能。
+2. 如果使用第三方的实现方式，是通过 Page Cache 进行数据写入的话。要尽量平滑写入，不能积累大量的脏页数据，然后瞬时写入，这样会导致磁盘IO峰值，影响读取性能。现在的机器内存都比较大，默认配置下，会积累比较多的脏页数据，才开始刷入磁盘。
 
-3. 控制IO的写入大小，不要使用过大的IO， 可能会引起性能波动。
+可以把下面的选项
+```
+vm.dirty_background_bytes = 104857600
+vm.dirty_bytes = 1073741824
+``` 
+写入到 /etc/sysctl.conf 中，然后执行 `sysctl -p` 生效。
+
+
+3. 控制IO的写入大小，不要使用过大的IO， 可能会引起性能波动。参数 `/sys/block/vdb/queue/max_sectors_kb` 可以控制IO的写入大小。 其中 vdb 是磁盘的名称，可以从 iostat 中查看。可以适当调整此值，比如调整成 64KB, 防止大块的IO阻塞读取请求。
+
+如果服务是运行在k8s环境里，可以通过 initContainer 来调整这个参数。 参考如下：
+```yaml
+      initContainers:
+        - command:
+            - sh
+            - '-c'
+            - |
+              # 检查设备是否存在，存在则修改
+              if [ -f /sys/block/nvme1n1/queue/max_sectors_kb ]; then
+                echo 64 > /sys/block/nvme1n1/queue/max_sectors_kb
+                echo "Successfully set max_sectors_kb to 64"
+              else
+                echo "Device /sys/block/nvme1n1 not found, skipping."
+              fi
+          image: busybox
+          imagePullPolicy: IfNotPresent
+          name: set-disk-params
+          resources: {}
+          securityContext:
+            privileged: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /sys
+              name: host-sys
+# 在 spec 部分添加 volumes
+      volumes:
+        - hostPath:
+            path: /sys
+            type: ''
+          name: host-sys
+```
+
