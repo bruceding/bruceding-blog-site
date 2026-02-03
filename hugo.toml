@@ -20,8 +20,8 @@ buildExpired = false
   ShowCodeCopyButtons = true
   name = 'bruce ding'
   [params.homeInfoParams]
-    Title = "Hi there \U0001F44B"
-    Content = "Welcome to BruceDing’s blog"
+    Title = ""
+    Content = ""
   [[params.socialIcons]]
     name = "x"
     url = "https://x.com/bruce_ding"

@@ -2,3 +2,15 @@
 .post-content a {
     color: blue;
 }
+
+/* 减少首页信息部分的空白高度 */
+.home-info {
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+}
+
+.first-entry {
+    min-height: auto !important;
+    margin: 0.5rem 0 0.5rem 0 !important;
+    padding: 0.5rem 0 !important;
+}
