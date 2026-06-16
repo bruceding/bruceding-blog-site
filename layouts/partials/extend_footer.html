@@ -13,13 +13,34 @@
   .glightbox-container { background: rgba(0,0,0,.88); }
   .gslide-description { font-size: 14px; }
 
-  /* 大屏下把文章正文区域放宽，避免两侧留白过多（PaperMod 默认 ~720px 太窄） */
+  /* 大屏下把文章正文区域放宽，避免两侧留白过多（PaperMod 默认 .main 768px、.post-single 720px 太窄） */
   @media screen and (min-width: 1100px) {
-    .post-single { max-width: 1100px !important; width: 1100px !important; }
-    .post-content { max-width: 100% !important; width: 100% !important; }
+    .main {
+      max-width: 1148px !important;   /* 1100 + gap(24)*2 */
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    .post-single {
+      max-width: 1100px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    .post-content {
+      max-width: 100% !important;
+      width: 100% !important;
+    }
   }
   @media screen and (min-width: 1400px) {
-    .post-single { max-width: 1280px !important; width: 1280px !important; }
+    .main {
+      max-width: 1328px !important;   /* 1280 + gap(24)*2 */
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+    .post-single {
+      max-width: 1280px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
   }
 </style>
 
