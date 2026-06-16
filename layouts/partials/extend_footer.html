@@ -14,39 +14,48 @@
   .gslide-description { font-size: 14px; }
 </style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.0/js/glightbox.min.js"></script>
 {{ $glightboxJS := `
 (function () {
-  // 仅在文章正文区域内生效
-  var wrappers = document.querySelectorAll('.post-content');
-  if (!wrappers.length) return;
+  function initGallery() {
+    var wrappers = document.querySelectorAll('.post-content');
+    if (!wrappers.length) return;
 
-  wrappers.forEach(function (wrap) {
-    // 排除 emoji、图标等小尺寸 img（宽高 < 48px）
-    wrap.querySelectorAll('img').forEach(function (img) {
-      if ((img.naturalWidth || img.width) < 48 && (img.naturalHeight || img.height) < 48) return;
-      // 已经是 <a> 子节点的不重复包装
-      if (img.parentElement && img.parentElement.tagName === 'A') return;
-      var a = document.createElement('a');
-      a.href = img.getAttribute('src') || img.src;
-      a.className = 'glightbox';
-      // 把 img 的 alt/title 作为灯箱描述
-      if (img.alt) a.setAttribute('data-description', img.alt);
-      if (img.title) a.setAttribute('data-title', img.title);
-      a.appendChild(img.cloneNode(true));
-      img.parentNode.replaceChild(a, img);
-    });
-  });
+    wrappers.forEach(function (wrap) {
+      wrap.querySelectorAll('img').forEach(function (img) {
+        // 跳过 SVG（站点图标、外部链接图标等）
+        var src = img.getAttribute('src') || '';
+        if (/\.svg(\?|$|#)/i.test(src) || /^data:image\/svg/.test(src)) return;
+        // 已经是 <a> 子节点的不重复包装
+        if (img.parentElement && img.parentElement.tagName === 'A') return;
 
-  if (typeof GLightbox === 'function') {
-    window._glightbox = GLightbox({
-      selector: '.glightbox',
-      touchNavigation: true,
-      loop: true,
-      keyboardNavigation: true,
-      closeOnOutsideClick: true,
-      autoplayVideos: true
+        var a = document.createElement('a');
+        a.href = src || img.src;
+        a.className = 'glightbox';
+        if (img.alt) a.setAttribute('data-description', img.alt);
+        if (img.title) a.setAttribute('data-title', img.title);
+        a.appendChild(img.cloneNode(true));
+        img.parentNode.replaceChild(a, img);
+      });
     });
+
+    if (typeof window.GLightbox === 'function') {
+      window._glightbox = GLightbox({
+        selector: '.glightbox',
+        touchNavigation: true,
+        loop: true,
+        keyboardNavigation: true,
+        closeOnOutsideClick: true,
+        autoplayVideos: true
+      });
+    }
+  }
+
+  // 必须等 DOM 解析完成再执行（此时 <img> 节点已就绪）
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGallery);
+  } else {
+    initGallery();
   }
 })();
 ` }}
