@@ -24,7 +24,7 @@ tags = ["llm", "claude", "knowledge", "tool", "go", "react", "architecture"]
 
 下面这张图是线上版本的 Inbox 视图，左侧是导航（Inbox / Later / Archived / Wiki Index 等），右侧是文档卡片，每张卡片都带有 LLM 生成的摘要、标签、语言标记和状态按钮。
 
-![Inbox 视图](./images/wiki-inbox.webp)
+![Inbox 视图](./images/wiki-inbox.png)
 
 日常阅读中，我们经常遇到这样的场景：在浏览器里看到一篇好文章随手收藏，过阵子却再也找不回来；订阅了一堆 RSS 和 Newsletter，信息反而变成噪音；想回顾一份英文 PDF，又懒得逐页重读。各种收藏夹和稍后读工具都能解决"保存"这一步，却很难真正解决"理解和检索"。
 
@@ -51,7 +51,7 @@ tags = ["llm", "claude", "knowledge", "tool", "go", "react", "architecture"]
 
 整体结构可以分为四层：客户端、Go 后端、Claude CLI、持久化存储。
 
-![LLM Knowledge 整体架构](./images/llm-knowledge-arch.webp)
+![LLM Knowledge 整体架构](./images/llm-knowledge-arch.png)
 
 后端用 Go 的 [Echo](https://github.com/labstack/echo) 框架，元数据和会话信息存在 SQLite（用 GORM 管理），文件内容直接落到文件系统。前端是 React 19 + TypeScript + Vite + Tailwind v4，构建产物被 `embed` 进二进制。Claude CLI 以子进程的方式运行，通过 `--output-format stream-json` 拿到结构化输出，再通过 SSE 流式回传给浏览器。
 
@@ -72,11 +72,11 @@ tags = ["llm", "claude", "knowledge", "tool", "go", "react", "architecture"]
 
 文档对话是最容易被感知的功能：打开一篇文档，点"对话"标签页，可以针对这篇文档问任何问题。看上去只是一个普通的聊天框，但背后藏着整套系统最精细的部分 — **Session Pool + Fan-out 事件分发**。
 
-![文档详情页与 Chat 标签](./images/doc-detail.webp)
+![文档详情页与 Chat 标签](./images/doc-detail.png)
 
-![Doc Chat 输入框](./images/doc-chat.webp)
+![Doc Chat 输入框](./images/doc-chat.png)
 
-![Session Pool 细节](./images/session-pool-detail.webp)
+![Session Pool 细节](./images/session-pool-detail.png)
 
 ### 为什么不直接调 API
 
@@ -117,7 +117,7 @@ tags = ["llm", "claude", "knowledge", "tool", "go", "react", "architecture"]
 
 知识库问答（Query）和文档对话（Doc Chat）看上去都是聊天框，但实现上差异明显：
 
-![知识库问答界面](./images/chat-history.webp)
+![知识库问答界面](./images/chat-history.png)
 
 | 维度 | Doc Chat | Wiki Chat |
 |---|---|---|
@@ -143,17 +143,17 @@ Wiki Chat 的核心想法很直接：**不建向量库，不让用户挑文档**
 
 下面两张截图来自线上版本。第一张是 PDF 类文档的， 点 Dual PDF 标签后原文和译文 PDF 左右并排显示：
 
-![Dual PDF 视图（原文 + 译文 PDF 并排）](./images/pdf-dual-409.webp)
+![Dual PDF 视图（原文 + 译文 PDF 并排）](./images/pdf-dual-409.png)
 
 第二张是网页剪藏类文档的 Bilingual (ZH) 视图，段落级中英对照、同步滚动：
 
-![Bilingual 视图（段落级中英对照）](./images/dual-pdf-view.webp)
+![Bilingual 视图（段落级中英对照）](./images/dual-pdf-view.png)
 
 ## Wiki 生产：从 Inbox 到结构化知识库
 
 这是整个系统最"魔法"的部分：用户只是上传了一篇 PDF 或剪藏了一篇网页，过一会儿就能在 Wiki 视图里看到一篇带实体、带主题、带互相引用的结构化条目。下图是整条链路。
 
-![Wiki 生产链路](./images/wiki-pipeline.webp)
+![Wiki 生产链路](./images/wiki-pipeline.png)
 
 ### 多源收敛到 Inbox
 
@@ -169,7 +169,7 @@ Wiki Chat 的核心想法很直接：**不建向量库，不让用户挑文档**
 
 导入页把所有入口整合到一起，五个标签分别对应 PDF 上传、网页剪藏、RSS、Blog、Newsletter，点一下就进 Inbox。
 
-![Import 页面（五个导入标签）](./images/import-page.webp)
+![Import 页面（五个导入标签）](./images/import-page.png)
 
 ### LLM Extract（PDF 的视觉抽取）
 
@@ -234,7 +234,7 @@ Ingest 完成后，`SyncIndexFiles()` 扫描 `sources/`、`entities/`、`topics/
 
 前端用 ReactMarkdown 渲染 wiki 文件，支持 `[[link]]` 双向链接语法。点一个实体名，会跳到对应的 `entities/<name>.md`，页面顶部有面包屑导航，侧边栏有 sources/entities/topics 的快捷入口。随着用户读得越来越多，Wiki 会自然形成一张互相引用的图谱。
 
-![Wiki Index 视图](./images/wiki-index.webp)
+![Wiki Index 视图](./images/wiki-index.png)
 
 ## Chrome 插件：把网页一键收进知识库
 
