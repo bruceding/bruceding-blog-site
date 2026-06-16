@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 680" font-family="Alibaba PuHuiTi,Heiti SC,Arial Unicode MS,sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/>
+    </marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrV" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="680" fill="#fafaf7"/>
+  <text x="550" y="34" font-size="19" font-weight="700" text-anchor="middle" fill="#1a202c">Session Pool 与 Fan-out 事件分发</text>
+  <text x="550" y="54" font-size="12" text-anchor="middle" fill="#718096">Doc Chat 与知识库问答共享的 Claude 子进程管理模型</text>
+
+  <!-- ===== 前端 SSE 连接 ===== -->
+  <g>
+    <text x="40" y="110" font-size="14" font-weight="700" fill="#1e3a8a">前端 (浏览器)</text>
+    <rect x="40" y="120" width="170" height="50" rx="8" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="125" y="142" font-size="12" text-anchor="middle" fill="#1e3a8a">文档对话 SSE</text>
+    <text x="125" y="158" font-size="10" text-anchor="middle" fill="#1e40af">Authorization: Bearer</text>
+
+    <rect x="40" y="180" width="170" height="50" rx="8" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="125" y="202" font-size="12" text-anchor="middle" fill="#1e3a8a">文档对话 SSE (重连)</text>
+    <text x="125" y="218" font-size="10" text-anchor="middle" fill="#1e40af">指数退避 500ms → 30s</text>
+
+    <rect x="40" y="240" width="170" height="50" rx="8" fill="#dbeafe" stroke="#3b82f6"/>
+    <text x="125" y="262" font-size="12" text-anchor="middle" fill="#1e3a8a">知识库问答 SSE</text>
+    <text x="125" y="278" font-size="10" text-anchor="middle" fill="#1e40af">?conversationId=...</text>
+  </g>
+
+  <!-- ===== API 层 ===== -->
+  <g>
+    <text x="270" y="110" font-size="14" font-weight="700" fill="#92400e">HTTP / SSE 处理层</text>
+    <rect x="260" y="120" width="150" height="80" rx="8" fill="#fef3c7" stroke="#d97706"/>
+    <text x="335" y="142" font-size="12" font-weight="600" text-anchor="middle" fill="#78350f">DocChatHandler</text>
+    <text x="335" y="160" font-size="10" text-anchor="middle" fill="#92400e">/api/doc-chat/stream</text>
+    <text x="335" y="174" font-size="10" text-anchor="middle" fill="#92400e">/api/doc-chat/message</text>
+    <text x="335" y="188" font-size="10" text-anchor="middle" fill="#92400e">/api/doc-chat/reconnect</text>
+
+    <rect x="260" y="220" width="150" height="70" rx="8" fill="#fef3c7" stroke="#d97706"/>
+    <text x="335" y="242" font-size="12" font-weight="600" text-anchor="middle" fill="#78350f">QueryHandler</text>
+    <text x="335" y="260" font-size="10" text-anchor="middle" fill="#92400e">/api/query/stream</text>
+    <text x="335" y="274" font-size="10" text-anchor="middle" fill="#92400e">/api/query/message</text>
+    <text x="335" y="288" font-size="10" text-anchor="middle" fill="#92400e">/api/query/interrupt</text>
+  </g>
+
+  <!-- arrows: 前端 → API -->
+  <path d="M210 145 L260 145" stroke="#2563eb" stroke-width="1.4" fill="none" marker-end="url(#arrB)"/>
+  <path d="M210 205 L260 180" stroke="#2563eb" stroke-width="1.4" fill="none" marker-end="url(#arrB)"/>
+  <path d="M210 265 L260 260" stroke="#2563eb" stroke-width="1.4" fill="none" marker-end="url(#arrB)"/>
+
+  <!-- ===== Session Pool (核心) ===== -->
+  <g>
+    <rect x="440" y="110" width="360" height="260" rx="14" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.6"/>
+    <text x="460" y="135" font-size="15" font-weight="700" fill="#5b21b6">Session Pool (sync.RWMutex)</text>
+    <text x="460" y="153" font-size="11" fill="#6d28d9">map[sessionID] *InteractiveSession</text>
+
+    <!-- Claude CLI 子进程 1 -->
+    <rect x="460" y="170" width="320" height="54" rx="7" fill="#faf5ff" stroke="#a855f7"/>
+    <text x="470" y="190" font-size="12" font-weight="600" fill="#581c87">claude --output-format stream-json --resume &lt;id&gt;</text>
+    <text x="470" y="207" font-size="10" fill="#6b21a8">stdin ← user msg · stdout → NDJSON · ALLOWED_DIR=userDir</text>
+    <text x="470" y="220" font-size="10" fill="#6b21a8">sseCount=2 · lastActive=now</text>
+
+    <!-- Claude CLI 子进程 2 -->
+    <rect x="460" y="232" width="320" height="54" rx="7" fill="#faf5ff" stroke="#a855f7"/>
+    <text x="470" y="252" font-size="12" font-weight="600" fill="#581c87">claude (query turn) --resume &lt;id&gt;</text>
+    <text x="470" y="269" font-size="10" fill="#6b21a8">turnCh: 单次提问事件通道</text>
+    <text x="470" y="282" font-size="10" fill="#6b21a8">自动保存 assistant 到 conversation_messages</text>
+
+    <!-- Claude CLI 子进程 3 (idle) -->
+    <rect x="460" y="294" width="320" height="36" rx="7" fill="#faf5ff" stroke="#a855f7" stroke-dasharray="4,3"/>
+    <text x="470" y="315" font-size="11" fill="#6b21a8">idle session · 120s 超时回收 · cleanupLoop</text>
+
+    <!-- 事件分发 -->
+    <rect x="460" y="340" width="320" height="22" rx="4" fill="#fde68a" stroke="#d97706"/>
+    <text x="620" y="355" font-size="11" text-anchor="middle" fill="#78350f">readEvents() → fan-out 到多个 SSE subscriber channel (buffer=100)</text>
+  </g>
+
+  <!-- arrows: API → Pool -->
+  <path d="M410 160 L440 170" stroke="#7c3aed" stroke-width="1.4" fill="none" marker-end="url(#arrV)"/>
+  <path d="M410 255 L440 260" stroke="#7c3aed" stroke-width="1.4" fill="none" marker-end="url(#arrV)"/>
+
+  <!-- ===== 存储 ===== -->
+  <g>
+    <rect x="840" y="120" width="230" height="150" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <text x="860" y="145" font-size="14" font-weight="700" fill="#14532d">SQLite 持久化</text>
+    <text x="855" y="168" font-size="11" fill="#166534">• documents.chat_session_id</text>
+    <text x="855" y="186" font-size="11" fill="#166534">• conversations (标题, user_id)</text>
+    <text x="855" y="204" font-size="11" fill="#166534">• conversation_messages</text>
+    <text x="855" y="222" font-size="11" fill="#166534">  (role / content / images)</text>
+    <text x="855" y="244" font-size="11" fill="#166534">CAS 更新防并发覆盖</text>
+    <text x="855" y="260" font-size="11" fill="#166534">WHERE id=? AND session_id=old</text>
+  </g>
+
+  <!-- arrows: Pool → SQLite -->
+  <path d="M800 180 L840 175" stroke="#16a34a" stroke-width="1.4" fill="none" marker-end="url(#arrG)"/>
+  <path d="M800 250 L840 230" stroke="#16a34a" stroke-width="1.4" fill="none" marker-end="url(#arrG)"/>
+
+  <!-- ===== 安全层 ===== -->
+  <g>
+    <rect x="840" y="285" width="230" height="90" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+    <text x="860" y="310" font-size="14" font-weight="700" fill="#7f1d1d">PreToolUse Hook</text>
+    <text x="855" y="328" font-size="11" fill="#991b1b">• path-validator.py</text>
+    <text x="855" y="344" font-size="11" fill="#991b1b">• realpath + 目录边界检查</text>
+    <text x="855" y="360" font-size="11" fill="#991b1b">• fail-closed · 黑名单路径</text>
+  </g>
+  <path d="M800 320 L840 320" stroke="#dc2626" stroke-width="1.4" fill="none" marker-end="url(#arr)"/>
+
+  <!-- ===== 生命周期 ===== -->
+  <g>
+    <text x="40" y="430" font-size="14" font-weight="700" fill="#334155">关键生命周期</text>
+
+    <rect x="40" y="445" width="180" height="70" rx="8" fill="#fff" stroke="#cbd5e0"/>
+    <text x="130" y="468" font-size="12" font-weight="600" text-anchor="middle" fill="#1e3a8a">1. 启动</text>
+    <text x="50" y="486" font-size="10" fill="#475569">StartSession → local-&lt;ts&gt;</text>
+    <text x="50" y="500" font-size="10" fill="#475569">→ 等 system.init 拿真实 id</text>
+
+    <rect x="240" y="445" width="180" height="70" rx="8" fill="#fff" stroke="#cbd5e0"/>
+    <text x="330" y="468" font-size="12" font-weight="600" text-anchor="middle" fill="#1e3a8a">2. 重连</text>
+    <text x="250" y="486" font-size="10" fill="#475569">--resume &lt;prev_id&gt;</text>
+    <text x="250" y="500" font-size="10" fill="#475569">失败则 onResumeFailed 清 DB</text>
+
+    <rect x="440" y="445" width="180" height="70" rx="8" fill="#fff" stroke="#cbd5e0"/>
+    <text x="530" y="468" font-size="12" font-weight="600" text-anchor="middle" fill="#1e3a8a">3. Fan-out</text>
+    <text x="450" y="486" font-size="10" fill="#475569">readEvents → 多个 subscriber</text>
+    <text x="450" y="500" font-size="10" fill="#475569">满 channel 写 WARNING 不丢弃</text>
+
+    <rect x="640" y="445" width="180" height="70" rx="8" fill="#fff" stroke="#cbd5e0"/>
+    <text x="730" y="468" font-size="12" font-weight="600" text-anchor="middle" fill="#1e3a8a">4. 回收</text>
+    <text x="650" y="486" font-size="10" fill="#475569">sseCount==0 且 120s 空闲</text>
+    <text x="650" y="500" font-size="10" fill="#475569">→ SIGTERM 子进程</text>
+
+    <rect x="840" y="445" width="230" height="70" rx="8" fill="#fff" stroke="#cbd5e0"/>
+    <text x="955" y="468" font-size="12" font-weight="600" text-anchor="middle" fill="#1e3a8a">5. 停机</text>
+    <text x="850" y="486" font-size="10" fill="#475569">SIGINT/SIGTERM → close(done)</text>
+    <text x="850" y="500" font-size="10" fill="#475569">10s 等请求完成 · kill 全部子进程</text>
+  </g>
+
+  <!-- ===== 数据流汇总 ===== -->
+  <g>
+    <rect x="40" y="540" width="1030" height="120" rx="10" fill="#fff" stroke="#cbd5e0" stroke-dasharray="4,3"/>
+    <text x="60" y="562" font-size="13" font-weight="700" fill="#334155">一条消息的完整旅程</text>
+    <text x="60" y="584" font-size="11" fill="#475569">① 用户在浏览器输入消息 → fetch POST /api/doc-chat/message (Bearer token)</text>
+    <text x="60" y="602" font-size="11" fill="#475569">② DocChatHandler 找到 session，调 SendUserMessage() → 通过 stdin 写入 {"type":"user","message":{...}}</text>
+    <text x="60" y="620" font-size="11" fill="#475569">③ Claude CLI 输出 NDJSON (stream-json) 到 stdout → readEvents() 解析为 StreamEvent</text>
+    <text x="60" y="638" font-size="11" fill="#475569">④ Fan-out 到订阅此 session 的所有 SSE subscriber channel (delta/full/tool_start/tool_end/done)</text>
+    <text x="60" y="656" font-size="11" fill="#475569">⑤ 前端 ReadableStream 按行解析 → 流式追加到气泡；同时把 assistant 内容写入 conversation_messages 表</text>
+  </g>
+</svg>
