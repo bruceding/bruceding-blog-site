@@ -328,14 +328,4 @@ cd llm_knowledge
 
 如果希望家人也使用，直接在浏览器访问服务地址注册即可，每个用户的数据按 `users/<id>/` 分区，互不影响。
 
-## 下一步
-
-目前项目已经覆盖了"收集 — 抽取 — 对话 — 整理"的完整链路，但在几方面还有改进空间：
-
-1. **向量检索**。目前基于关键词匹配（Claude 用 Grep 找），对于大型知识库召回率不够。可以引入 embedding 模型 + 向量库（SQLite 的 sqlite-vec 或者 Qdrant），把关键词检索和语义检索混排。
-2. **本地模型备选**。引入 ollama 作为 Claude 的 fallback，离线环境也能用，隐私敏感文档不必离开本机。
-3. **双向链工具打通**。支持 Obsidian / Logseq 的导出导入，让知识库和现有工作流无缝衔接。
-4. **移动端原生**。目前是响应式 Web，未来可能做 PWA 或者原生壳，支持离线同步。
-5. **协作编辑**。Wiki 条目目前只能由 LLM 和用户分别编辑，未来可以引入 CRDT 或 OT，让多人协作更流畅。
-
 项目代码在 [github.com/bruceding/llm_knowledge](https://github.com/bruceding/llm_knowledge)，欢迎试用、提 issue、或者直接 PR。
