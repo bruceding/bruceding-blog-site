@@ -124,7 +124,7 @@ Each translation task has its own state field (pending / translating / done / fa
 
 This is where the tool earns its keep. A user uploads a PDF or clips a web page. A few minutes later, a structured wiki entry appears — with entity pages, topic pages, and cross-references to other things they've read. The user did nothing but click "Publish."
 
-![Wiki production pipeline: from Inbox to structured wiki entries.](https://raw.githubusercontent.com/bruceding/bruceding-blog-site/main/content/posts/images/wiki-pipeline.png)
+![Wiki production pipeline: from Inbox to structured wiki entries.](https://raw.githubusercontent.com/bruceding/bruceding-blog-site/main/content/posts/images/wiki-pipeline-en.png)
 
 ### Many sources, one inbox
 
