@@ -74,7 +74,7 @@ Open any document and switch to the Chat tab. You can ask anything about that sp
 
 ![Doc Chat input with a streaming answer.](https://raw.githubusercontent.com/bruceding/bruceding-blog-site/main/content/posts/images/doc-chat.png)
 
-![Session Pool detail: each document pins one Claude subprocess.](https://raw.githubusercontent.com/bruceding/bruceding-blog-site/main/content/posts/images/session-pool-detail.png)
+![Session Pool detail: each document pins one Claude subprocess.](https://raw.githubusercontent.com/bruceding/bruceding-blog-site/main/content/posts/images/session-pool-detail-en.png)
 
 The naive approach would be: on every message, pack the document plus the conversation history, call the Claude API once, stream the response. That breaks down quickly — the document may be tens of thousands of tokens, re-sending it every turn is slow and expensive, and there's no real notion of a session.
 
