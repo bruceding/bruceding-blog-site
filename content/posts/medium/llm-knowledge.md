@@ -56,7 +56,7 @@ Before writing any code, I wrote down a few constraints. Every later trade-off i
 
 The system breaks into four layers: clients (browser, Chrome extension, mobile), the Go backend (Echo + GORM + SQLite), Claude CLI as a pool of subprocesses, and persistent storage (files under `~/.llm-knowledge/`).
 
-![Architecture diagram: clients on top, Go backend in the middle with a dozen modules, Claude CLI subprocesses on the right, SQLite and file storage on the bottom.](https://raw.githubusercontent.com/bruceding/bruceding-blog-site/main/content/posts/images/llm-knowledge-arch.png)
+![Architecture diagram: clients on top, Go backend in the middle with a dozen modules, Claude CLI subprocesses on the right, SQLite and file storage on the bottom.](https://raw.githubusercontent.com/bruceding/bruceding-blog-site/main/content/posts/images/llm-knowledge-arch-en.png)
 *Architecture. The Go backend hosts REST + SSE endpoints, a session pool for Claude subprocesses, a headless-browser pool for SPA clipping, schedulers for RSS/Blog/Newsletter, and the pdf2zh translator.*
 
 The backend is Go with Echo for routing and GORM for SQLite. The frontend is React 19 + TypeScript + Vite + Tailwind v4, and the build output is embedded into the binary with Go's `embed` package. Claude CLI runs as a subprocess, producing structured JSON line-by-line on stdout, which the backend parses and forwards to browsers over Server-Sent Events.
